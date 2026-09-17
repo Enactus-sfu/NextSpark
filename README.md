@@ -1,6 +1,6 @@
 # NextSpark
 
-Marketing site for NextSpark, an Enactus SFU after-school STEM program where high school students build a hand-crank generator from a kit. Built by Michael Gudz.
+Marketing site for NextSpark, an Enactus SFU after-school STEM program where high school students build a hand-crank generator from a kit.
 
 ## Stack
 
