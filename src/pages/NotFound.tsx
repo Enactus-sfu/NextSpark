@@ -6,8 +6,16 @@ const NotFound = () => {
   useEffect(() => {
     const title = document.title;
     document.title = "Page not found | NextSpark";
+
+    // Every unknown path is served the same index.html, so keep 404s out of search results.
+    const robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex";
+    document.head.appendChild(robots);
+
     return () => {
       document.title = title;
+      robots.remove();
     };
   }, []);
 

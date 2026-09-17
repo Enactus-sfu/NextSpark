@@ -44,7 +44,7 @@ const Program = () => {
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {/* Image */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg animate-fade-in lg:self-start lg:sticky lg:top-24">
-            <img src={kitImage} alt="Assembled NextSpark hand-crank generator next to a multimeter" className="w-full h-auto" />
+            <img src={kitImage} alt="Assembled NextSpark hand-crank generator next to a multimeter" loading="lazy" decoding="async" className="w-full h-auto" />
           </div>
 
           {/* Steps */}
