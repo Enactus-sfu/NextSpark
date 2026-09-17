@@ -23,7 +23,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <button type="button" aria-label="NextSpark home" className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection("hero")}>
+          <button type="button" aria-label="NextSpark home" className="flex items-center gap-3 py-1.5 cursor-pointer" onClick={() => scrollToSection("hero")}>
             <img src={logo} alt="" className="h-8 md:h-10" />
           </button>
 
@@ -48,7 +48,7 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2"
+            className="md:hidden p-2.5"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -62,7 +62,7 @@ const Navigation = () => {
           <div id="mobile-menu" className="md:hidden py-4 animate-fade-in">
             <div className="flex flex-col gap-4">
               {sections.map(({ id, label }) => (
-                <button key={id} onClick={() => scrollToSection(id)} className="text-left py-2 text-foreground hover:text-primary transition-base">
+                <button key={id} onClick={() => scrollToSection(id)} className="text-left py-2.5 text-foreground hover:text-primary transition-base">
                   {label}
                 </button>
               ))}

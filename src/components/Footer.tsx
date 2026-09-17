@@ -29,7 +29,7 @@ const Footer = () => {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-base"
+              className="w-11 h-11 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-base"
               aria-label="NextSpark on Instagram"
             >
               <Instagram className="w-5 h-5" />
@@ -42,13 +42,13 @@ const Footer = () => {
             <ul className="space-y-2">
               {sections.map(({ id, label }) => (
                 <li key={id}>
-                  <button onClick={() => scrollToSection(id)} className="text-background/80 hover:text-background transition-base">
+                  <button onClick={() => scrollToSection(id)} className="py-2.5 text-background/80 hover:text-background transition-base">
                     {label}
                   </button>
                 </li>
               ))}
               <li>
-                <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="text-background/80 hover:text-background transition-base">
+                <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="inline-block py-2.5 text-background/80 hover:text-background transition-base">
                   Leave Feedback
                 </a>
               </li>
