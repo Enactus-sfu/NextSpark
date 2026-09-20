@@ -21,7 +21,7 @@ const Turntable = ({
   className = "",
   imgClassName = "",
   ...rest
-}: { mode?: ScrubMode; turns?: number; className?: string; imgClassName?: string }) => {
+}: { mode?: ScrubMode; turns?: number; className?: string; imgClassName?: string; initialFrame?: number }) => {
   if (!hasTurntable) {
     return (
       <img
@@ -35,7 +35,8 @@ const Turntable = ({
       />
     );
   }
-  return <FrameScrubber frames={frames} alt={`${ALT}, rotatable`} hint="Drag to rotate" className={className} imgClassName={imgClassName} {...rest} />;
+  // frame 20 of 24 is the 300 degree three-quarter view: crank readable, logo visible
+  return <FrameScrubber frames={frames} alt={`${ALT}, rotatable`} hint="Drag to rotate" initialFrame={20} className={className} imgClassName={imgClassName} {...rest} />;
 };
 
 export default Turntable;

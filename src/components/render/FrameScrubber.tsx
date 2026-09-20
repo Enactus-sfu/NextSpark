@@ -16,6 +16,8 @@ type Props = {
   className?: string;
   imgClassName?: string;
   onProgress?: (p: number) => void;
+  /** Frame shown before any interaction. Lets a hero open on a flattering angle. */
+  initialFrame?: number;
 };
 
 /**
@@ -34,11 +36,12 @@ const FrameScrubber = ({
   className = "",
   imgClassName = "",
   onProgress,
+  initialFrame = 0,
 }: Props) => {
-  const { urls, loaded, total } = useFrameSequence(frames);
-  const [index, setIndex] = useState(0);
-  const [showHint, setShowHint] = useState(true);
   const host = useRef<HTMLDivElement>(null);
+  const { urls, loaded, total, started } = useFrameSequence(frames, host);
+  const [index, setIndex] = useState(initialFrame);
+  const [showHint, setShowHint] = useState(true);
   const drag = useRef<{ x: number; start: number } | null>(null);
 
   useEffect(() => {
@@ -130,6 +133,7 @@ const FrameScrubber = ({
           alt={i === 0 ? alt : ""}
           aria-hidden={i !== 0}
           draggable={false}
+          loading={i === 0 ? "eager" : "lazy"}
           className={`w-full h-auto ${imgClassName} ${i === index ? "opacity-100 relative" : "opacity-0 absolute inset-0"}`}
         />
       ))}
@@ -140,7 +144,7 @@ const FrameScrubber = ({
         </div>
       )}
 
-      {loaded < total && (
+      {started && loaded < total && (
         <div
           className="pointer-events-none absolute bottom-0 left-0 h-0.5 bg-primary/60 transition-[width] duration-200"
           style={{ width: `${(loaded / total) * 100}%` }}
