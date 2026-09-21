@@ -1,5 +1,6 @@
+import { useCallback, useRef, useState } from "react";
 import { Wrench, Zap, FlaskConical } from "lucide-react";
-import kitImage from "@/assets/hand-crank-generator.jpg";
+import ExplodedReveal from "@/components/render/ExplodedReveal";
 
 const steps = [
   {
@@ -31,6 +32,16 @@ const steps = [
 const takeaways = ["Hands-On Building", "Real Measurements", "Physics You Can See", "Teamwork"];
 
 const Program = () => {
+  // The teardown column is sticky, so progress is measured against this outer
+  // wrapper: a stuck element's top stops changing and would freeze the sequence.
+  const track = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const onProgress = useCallback((p: number) => {
+    setProgress((cur) => (Math.abs(cur - p) < 0.01 ? cur : p));
+  }, []);
+  // Which of the three steps the teardown is currently sitting in.
+  const active = Math.min(steps.length - 1, Math.floor(progress * steps.length));
+
   return (
     <section id="program" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
@@ -42,9 +53,16 @@ const Program = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* Image */}
-          <div className="relative rounded-2xl overflow-hidden shadow-lg animate-fade-in lg:self-start lg:sticky lg:top-24">
-            <img src={kitImage} alt="Assembled NextSpark hand-crank generator next to a multimeter" className="w-full h-auto" />
+          {/* The kit, coming apart as you scroll the steps beside it */}
+          <div ref={track} className="animate-fade-in">
+            <div className="lg:sticky lg:top-24">
+              <div className="rounded-2xl border border-border gradient-subtle p-4 sm:p-6">
+                <ExplodedReveal trackRef={track} onProgress={onProgress} className="mx-auto w-full max-w-md" />
+              </div>
+              <p className="mt-4 text-sm text-muted-foreground text-center">
+                Assembled, the six coils sit inside the housing where you cannot see them. Scroll to take the kit apart.
+              </p>
+            </div>
           </div>
 
           {/* Steps */}
@@ -52,7 +70,9 @@ const Program = () => {
             {steps.map(({ step, title, icon: Icon, description, outcomes, tint }, index) => (
               <div
                 key={title}
-                className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-base animate-slide-in"
+                className={`bg-card rounded-xl p-6 border transition-base animate-slide-in motion-reduce:transition-none ${
+                  index === active ? "border-primary shadow-lg" : "border-border hover:shadow-lg"
+                }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start gap-4 mb-4">

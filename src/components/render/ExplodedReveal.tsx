@@ -18,6 +18,8 @@ type Props = {
   className?: string;
   imgClassName?: string;
   onProgress?: (p: number) => void;
+  /** Non-sticky ancestor to measure scroll progress against. */
+  trackRef?: React.RefObject<HTMLElement | null>;
 };
 
 /**
@@ -25,7 +27,7 @@ type Props = {
  * passes through the viewport. Plays once and holds rather than looping.
  * Falls back to the assembled still when the sequence is absent.
  */
-const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, ...rest }: Props) => {
+const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, trackRef, ...rest }: Props) => {
   // Keep callers that drive captions off progress in a sane state without frames.
   useEffect(() => {
     if (!hasExploded) onProgress?.(0);
@@ -51,6 +53,7 @@ const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, ...rest
       className={className}
       imgClassName={imgClassName}
       onProgress={onProgress}
+      trackRef={trackRef}
       {...rest}
     />
   );

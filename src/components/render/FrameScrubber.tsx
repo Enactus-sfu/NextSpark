@@ -18,6 +18,12 @@ type Props = {
   onProgress?: (p: number) => void;
   /** Frame shown before any interaction. Lets a hero open on a flattering angle. */
   initialFrame?: number;
+  /**
+   * Element whose position drives scroll progress. Pass a non-sticky ancestor
+   * when the scrubber itself is position:sticky -- a stuck element's top stops
+   * changing, which would freeze progress partway through the sequence.
+   */
+  trackRef?: React.RefObject<HTMLElement | null>;
 };
 
 /**
@@ -37,6 +43,7 @@ const FrameScrubber = ({
   imgClassName = "",
   onProgress,
   initialFrame = 0,
+  trackRef,
 }: Props) => {
   const host = useRef<HTMLDivElement>(null);
   const { urls, loaded, total, started } = useFrameSequence(frames, host);
@@ -55,7 +62,7 @@ const FrameScrubber = ({
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const el = host.current;
+        const el = trackRef?.current ?? host.current;
         if (!el) return;
         const r = el.getBoundingClientRect();
         const span = r.height + window.innerHeight;
@@ -72,7 +79,7 @@ const FrameScrubber = ({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [mode, total, turns, loop, onProgress]);
+  }, [mode, total, turns, loop, onProgress, trackRef]);
 
   const onDown = useCallback(
     (e: React.PointerEvent) => {
