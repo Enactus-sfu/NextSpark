@@ -48,12 +48,11 @@ const Hero = () => {
             </dl>
           </div>
 
-          {/* Showcase: the kit lit against a dark stage, spinnable */}
-          <div className="order-1 lg:order-2 animate-scale-in">
-            <div className="showcase relative rounded-[1.75rem] overflow-hidden p-6 sm:p-8">
-              <div aria-hidden="true" className="showcase-glow" />
-              <Turntable mode="drag" className="relative mx-auto w-full max-w-[22rem] lg:max-w-[28rem]" />
-            </div>
+          {/* No frame around it: the render carries its own contact shadow, so it
+              sits on the page rather than in a box. */}
+          <div className="order-1 lg:order-2 relative animate-scale-in">
+            <div aria-hidden="true" className="kit-pedestal" />
+            <Turntable mode="drag" className="relative mx-auto w-full max-w-[21rem] lg:max-w-[27rem]" />
           </div>
         </div>
       </div>

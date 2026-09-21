@@ -111,23 +111,22 @@
 }
 
 @layer components {
-  /* Dark stage for the 3D kit: the render is lit with teal and mint rims, so it
-     needs a dark ground to read against rather than the page's near-white. */
-  .showcase {
-    background:
-      radial-gradient(120% 90% at 50% 8%, hsl(197 45% 20%) 0%, transparent 60%),
-      linear-gradient(160deg, hsl(203 42% 13%) 0%, hsl(206 45% 8%) 100%);
-    box-shadow:
-      0 24px 60px -20px hsl(203 45% 10% / 0.55),
-      inset 0 1px 0 0 hsl(183 40% 70% / 0.14);
-  }
-  /* Soft pool of brand light behind the machine. */
-  .showcase-glow {
+  /* A single soft pool of light under the kit. Neutral, not tinted: the render
+     is lit white, and a coloured wash underneath reads as a filter over it. */
+  .kit-pedestal {
     position: absolute;
-    inset: auto 0 -22% 0;
-    height: 62%;
-    background: radial-gradient(60% 100% at 50% 100%, hsl(183 55% 50% / 0.30) 0%, transparent 72%);
-    filter: blur(6px);
+    left: 50%;
+    bottom: 4%;
+    width: 78%;
+    height: 34%;
+    transform: translateX(-50%);
+    background: radial-gradient(
+      closest-side,
+      hsl(200 22% 62% / 0.20) 0%,
+      hsl(200 22% 62% / 0.09) 45%,
+      transparent 78%
+    );
+    filter: blur(14px);
     pointer-events: none;
   }
 }

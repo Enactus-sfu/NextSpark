@@ -49,7 +49,9 @@ const FrameScrubber = ({
   const { urls, loaded, total, started } = useFrameSequence(frames, host);
   const [index, setIndex] = useState(initialFrame);
   const [showHint, setShowHint] = useState(true);
-  const drag = useRef<{ x: number; start: number } | null>(null);
+  const drag = useRef<{ x: number; start: number; lastX: number; lastT: number; v: number } | null>(null);
+  const spin = useRef<number>(0);          // frames per second, decaying after release
+  const raf = useRef<number>(0);
 
   useEffect(() => {
     if (mode !== "scroll" || !total) return;
@@ -84,7 +86,9 @@ const FrameScrubber = ({
   const onDown = useCallback(
     (e: React.PointerEvent) => {
       if (mode !== "drag" || !total) return;
-      drag.current = { x: e.clientX, start: index };
+      cancelAnimationFrame(raf.current);
+      spin.current = 0;
+      drag.current = { x: e.clientX, start: index, lastX: e.clientX, lastT: performance.now(), v: 0 };
       (e.target as Element).setPointerCapture?.(e.pointerId);
       setShowHint(false);
     },
@@ -96,14 +100,45 @@ const FrameScrubber = ({
       const d = drag.current;
       if (!d || !total) return;
       const w = host.current?.clientWidth || 400;
+      const now = performance.now();
+      const dt = Math.max(16, now - d.lastT);
+      // frames/second, for the coast after release
+      d.v = (-(e.clientX - d.lastX) / w) * total * (1000 / dt);
+      d.lastX = e.clientX;
+      d.lastT = now;
       setIndex(wrap(Math.round(d.start - ((e.clientX - d.x) / w) * total), total));
     },
     [total],
   );
 
+  // Coast on release, decaying to a stop. A turntable that halts the instant you
+  // let go feels like a slider; one that carries a little momentum feels like an
+  // object. Skipped entirely under prefers-reduced-motion.
   const onUp = useCallback(() => {
+    const d = drag.current;
     drag.current = null;
-  }, []);
+    if (!d || !total) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (Math.abs(d.v) < 1.5) return;
+    spin.current = Math.max(-total * 2, Math.min(total * 2, d.v));
+    let prev = performance.now();
+    let acc = 0;
+    const step = (t: number) => {
+      const dt = (t - prev) / 1000;
+      prev = t;
+      acc += spin.current * dt;
+      const whole = Math.trunc(acc);
+      if (whole !== 0) {
+        acc -= whole;
+        setIndex((i) => wrap(i + whole, total));
+      }
+      spin.current *= Math.exp(-3.4 * dt);   // settles in about a second
+      if (Math.abs(spin.current) > 0.6) raf.current = requestAnimationFrame(step);
+    };
+    raf.current = requestAnimationFrame(step);
+  }, [total]);
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
   const onKey = useCallback(
     (e: React.KeyboardEvent) => {
