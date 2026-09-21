@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Turntable, { hasTurntable } from "@/components/render/Turntable";
-import heroRender from "@/assets/renders/hero.webp";
+import Turntable from "@/components/render/Turntable";
 
 const facts = [
   { value: "6", label: "Hand-Wound Coils" },
@@ -10,7 +9,9 @@ const facts = [
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   };
 
   return (
@@ -37,7 +38,6 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Kit facts */}
             <dl className="mt-12 grid grid-cols-3 gap-8 max-w-2xl animate-fade-in" style={{ animationDelay: "0.6s" }}>
               {facts.map((fact) => (
                 <div key={fact.label} className="flex flex-col">
@@ -48,20 +48,12 @@ const Hero = () => {
             </dl>
           </div>
 
-          {/* The kit itself — contained, nothing washing over it, drag to spin */}
-          <div className="order-1 lg:order-2 relative animate-scale-in">
-            <div aria-hidden="true" className="absolute inset-0 -z-10 rounded-full bg-secondary/15 blur-3xl scale-90" />
-            {hasTurntable ? (
-              <Turntable mode="drag" className="mx-auto w-full max-w-[22rem] lg:max-w-[30rem]" />
-            ) : (
-              <img
-                src={heroRender}
-                alt="3D render of the NextSpark hand-crank generator"
-                className="mx-auto w-full max-w-[22rem] lg:max-w-[30rem]"
-                width={1200}
-                height={1499}
-              />
-            )}
+          {/* Showcase: the kit lit against a dark stage, spinnable */}
+          <div className="order-1 lg:order-2 animate-scale-in">
+            <div className="showcase relative rounded-[1.75rem] overflow-hidden p-6 sm:p-8">
+              <div aria-hidden="true" className="showcase-glow" />
+              <Turntable mode="drag" className="relative mx-auto w-full max-w-[22rem] lg:max-w-[28rem]" />
+            </div>
           </div>
         </div>
       </div>
