@@ -181,7 +181,10 @@ const FrameScrubber = ({
       ))}
 
       {interactive && showHint && (
-        <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-foreground/70 text-background text-xs font-medium backdrop-blur-sm">
+        <div className="pointer-events-none absolute -bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-[0.7rem] font-medium tracking-wide text-muted-foreground/80">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M9 6 5 12l4 6M15 6l4 6-4 6" />
+          </svg>
           {hint}
         </div>
       )}
