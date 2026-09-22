@@ -109,3 +109,24 @@
     animation: none;
   }
 }
+
+@layer components {
+  /* A single soft pool of light under the kit. Neutral, not tinted: the render
+     is lit white, and a coloured wash underneath reads as a filter over it. */
+  .kit-pedestal {
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    width: 78%;
+    height: 34%;
+    transform: translateX(-50%);
+    background: radial-gradient(
+      closest-side,
+      hsl(200 22% 62% / 0.20) 0%,
+      hsl(200 22% 62% / 0.09) 45%,
+      transparent 78%
+    );
+    filter: blur(14px);
+    pointer-events: none;
+  }
+}

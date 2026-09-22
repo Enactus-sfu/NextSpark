@@ -1,5 +1,6 @@
+import { useCallback, useRef, useState } from "react";
 import { Wrench, Zap, FlaskConical } from "lucide-react";
-import kitImage from "@/assets/hand-crank-generator.jpg";
+import ExplodedReveal from "@/components/render/ExplodedReveal";
 
 const steps = [
   {
@@ -31,6 +32,16 @@ const steps = [
 const takeaways = ["Hands-On Building", "Real Measurements", "Physics You Can See", "Teamwork"];
 
 const Program = () => {
+  // The teardown column is sticky, so progress is measured against this outer
+  // wrapper: a stuck element's top stops changing and would freeze the sequence.
+  const track = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const onProgress = useCallback((p: number) => {
+    setProgress((cur) => (Math.abs(cur - p) < 0.01 ? cur : p));
+  }, []);
+  // Which of the three steps the teardown is currently sitting in.
+  const active = Math.min(steps.length - 1, Math.floor(progress * steps.length));
+
   return (
     <section id="program" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
@@ -41,18 +52,41 @@ const Program = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* Image */}
-          <div className="relative rounded-2xl overflow-hidden shadow-lg animate-fade-in lg:self-start lg:sticky lg:top-24">
-            <img src={kitImage} alt="Assembled NextSpark hand-crank generator next to a multimeter" className="w-full h-auto" />
+        {/* The tracked wrapper is this whole block, not the kit's column: a sticky
+            element only pins while its containing block is taller than it is, and
+            the kit's own column is exactly its own height. Measuring here also
+            makes the mobile stack work, where there is no grid to stretch it. */}
+        <div ref={track} className="lg:grid lg:grid-cols-2 lg:gap-8 mb-12">
+          {/* The kit assembles as the steps scroll past. Pinned for the whole
+              section, so the camera never appears to move and the finished
+              generator is fully in frame when it lands. */}
+          <div className="animate-fade-in sticky top-20 lg:top-0 lg:h-screen flex items-center">
+              <div className="w-full">
+                <ExplodedReveal
+                  trackRef={track}
+                  pin
+                  holdEnd={0.3}
+                  onProgress={onProgress}
+                  className="mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[30rem]"
+                />
+                <p className="mt-2 text-sm text-muted-foreground text-center">
+                  Six coils, twelve magnets and the gear train. Scroll to put it together.
+                </p>
+              </div>
           </div>
 
-          {/* Steps */}
-          <div className="space-y-6">
+          {/* Steps: each one takes a slice of the scroll, which is what gives the
+              pinned kit beside it room to stay pinned. */}
+          <div className="space-y-6 lg:space-y-0 relative">
             {steps.map(({ step, title, icon: Icon, description, outcomes, tint }, index) => (
               <div
                 key={title}
-                className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-base animate-slide-in"
+                className="min-h-[70vh] lg:min-h-[85vh] flex items-center"
+              >
+              <div
+                className={`w-full bg-card rounded-xl p-6 border transition-base animate-slide-in motion-reduce:transition-none ${
+                  index === active ? "border-primary shadow-lg" : "border-border hover:shadow-lg"
+                }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start gap-4 mb-4">
@@ -73,6 +107,7 @@ const Program = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
               </div>
             ))}
           </div>
