@@ -2,14 +2,7 @@ import { useEffect } from "react";
 import FrameScrubber, { type ScrubMode } from "./FrameScrubber";
 import stillSrc from "@/assets/renders/hero.webp";
 
-const frames = import.meta.glob("../../assets/renders/exploded/*.webp", {
-  eager: true,
-  query: "?url",
-  import: "default",
-}) as Record<string, string>;
-
-/** True once the teardown sequence has been added to the bundle. */
-export const hasExploded = Object.keys(frames).length > 0;
+import { explodedFrames as frames, hasExploded } from "./explodedFrames";
 
 const ALT = "The NextSpark generator assembling from its separate parts: 6 coils, 12 magnets, rotor and gear train";
 

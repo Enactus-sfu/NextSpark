@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState } from "react";
 import { Wrench, Zap, FlaskConical } from "lucide-react";
 import ExplodedReveal from "@/components/render/ExplodedReveal";
+import { assembledStill } from "@/components/render/explodedFrames";
+import { useMinWidth } from "@/components/render/useMinWidth";
 
 const steps = [
   {
@@ -35,6 +37,9 @@ const Program = () => {
   // The teardown column is sticky, so progress is measured against this outer
   // wrapper: a stuck element's top stops changing and would freeze the sequence.
   const track = useRef<HTMLDivElement>(null);
+  // Pin and animate only where there is room to do it without the step cards
+  // sliding over the kit. Below this the kit is simply a still.
+  const pinned = useMinWidth(1024);
   const [progress, setProgress] = useState(0);
   const onProgress = useCallback((p: number) => {
     setProgress((cur) => (Math.abs(cur - p) < 0.01 ? cur : p));
@@ -60,19 +65,29 @@ const Program = () => {
           {/* The kit assembles as the steps scroll past. Pinned for the whole
               section, so the camera never appears to move and the finished
               generator is fully in frame when it lands. */}
-          <div className="animate-fade-in sticky top-20 lg:top-0 lg:h-screen flex items-center">
-              <div className="w-full">
+          <div className="animate-fade-in lg:sticky lg:top-0 lg:h-screen flex items-center">
+            <div className="w-full">
+              {pinned ? (
                 <ExplodedReveal
                   trackRef={track}
                   pin
-                  holdEnd={0.3}
+                  holdEnd={0.28}
                   onProgress={onProgress}
-                  className="mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[30rem]"
+                  className="mx-auto w-full max-w-[30rem]"
                 />
+              ) : (
+                <img
+                  src={assembledStill}
+                  alt="3D render of the assembled NextSpark hand-crank generator"
+                  className="mx-auto w-full max-w-[17rem] sm:max-w-[22rem]"
+                />
+              )}
+              {pinned && (
                 <p className="mt-2 text-sm text-muted-foreground text-center">
                   Six coils, twelve magnets and the gear train. Scroll to put it together.
                 </p>
-              </div>
+              )}
+            </div>
           </div>
 
           {/* Steps: each one takes a slice of the scroll, which is what gives the
@@ -81,7 +96,7 @@ const Program = () => {
             {steps.map(({ step, title, icon: Icon, description, outcomes, tint }, index) => (
               <div
                 key={title}
-                className="min-h-[70vh] lg:min-h-[85vh] flex items-center"
+                className={`flex items-center ${index === steps.length - 1 ? "lg:min-h-[58vh]" : "lg:min-h-[82vh]"}`}
               >
               <div
                 className={`w-full bg-card rounded-xl p-6 border transition-base animate-slide-in motion-reduce:transition-none ${
