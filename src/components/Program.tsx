@@ -52,25 +52,39 @@ const Program = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* The kit, coming apart as you scroll the steps beside it */}
-          <div ref={track} className="animate-fade-in">
-            <div className="lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-border gradient-subtle p-4 sm:p-6">
-                <ExplodedReveal trackRef={track} onProgress={onProgress} className="mx-auto w-full max-w-md" />
+        {/* The tracked wrapper is this whole block, not the kit's column: a sticky
+            element only pins while its containing block is taller than it is, and
+            the kit's own column is exactly its own height. Measuring here also
+            makes the mobile stack work, where there is no grid to stretch it. */}
+        <div ref={track} className="lg:grid lg:grid-cols-2 lg:gap-8 mb-12">
+          {/* The kit assembles as the steps scroll past. Pinned for the whole
+              section, so the camera never appears to move and the finished
+              generator is fully in frame when it lands. */}
+          <div className="animate-fade-in sticky top-20 lg:top-0 lg:h-screen flex items-center">
+              <div className="w-full">
+                <ExplodedReveal
+                  trackRef={track}
+                  pin
+                  holdEnd={0.3}
+                  onProgress={onProgress}
+                  className="mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[30rem]"
+                />
+                <p className="mt-2 text-sm text-muted-foreground text-center">
+                  Six coils, twelve magnets and the gear train. Scroll to put it together.
+                </p>
               </div>
-              <p className="mt-4 text-sm text-muted-foreground text-center">
-                Assembled, the six coils sit inside the housing where you cannot see them. Scroll to take the kit apart.
-              </p>
-            </div>
           </div>
 
-          {/* Steps */}
-          <div className="space-y-6">
+          {/* Steps: each one takes a slice of the scroll, which is what gives the
+              pinned kit beside it room to stay pinned. */}
+          <div className="space-y-6 lg:space-y-0 relative">
             {steps.map(({ step, title, icon: Icon, description, outcomes, tint }, index) => (
               <div
                 key={title}
-                className={`bg-card rounded-xl p-6 border transition-base animate-slide-in motion-reduce:transition-none ${
+                className="min-h-[70vh] lg:min-h-[85vh] flex items-center"
+              >
+              <div
+                className={`w-full bg-card rounded-xl p-6 border transition-base animate-slide-in motion-reduce:transition-none ${
                   index === active ? "border-primary shadow-lg" : "border-border hover:shadow-lg"
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -93,6 +107,7 @@ const Program = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
               </div>
             ))}
           </div>

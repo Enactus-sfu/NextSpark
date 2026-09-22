@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFrameSequence, wrap } from "./useFrameSequence";
 
 export type ScrubMode = "drag" | "scroll";
@@ -18,6 +18,20 @@ type Props = {
   onProgress?: (p: number) => void;
   /** Frame shown before any interaction. Lets a hero open on a flattering angle. */
   initialFrame?: number;
+  /** Play the sequence backwards, e.g. scroll to assemble rather than explode. */
+  reverse?: boolean;
+  /**
+   * Map progress to the window in which a sticky child is actually pinned,
+   * rather than to the track's whole pass through the viewport. Without this the
+   * sequence is still mid-way when the element unsticks and scrolls off.
+   */
+  pin?: boolean;
+  /**
+   * Finish the sequence this fraction early and hold the last frame for the rest
+   * of the scroll, so the finished state gets a beat on screen before the
+   * section releases instead of completing as it leaves.
+   */
+  holdEnd?: number;
   /**
    * Element whose position drives scroll progress. Pass a non-sticky ancestor
    * when the scrubber itself is position:sticky -- a stuck element's top stops
@@ -44,9 +58,13 @@ const FrameScrubber = ({
   onProgress,
   initialFrame = 0,
   trackRef,
+  reverse = false,
+  pin = false,
+  holdEnd = 0,
 }: Props) => {
   const host = useRef<HTMLDivElement>(null);
-  const { urls, loaded, total, started } = useFrameSequence(frames, host);
+  const { urls: rawUrls, loaded, total, started } = useFrameSequence(frames, host);
+  const urls = useMemo(() => (reverse ? [...rawUrls].reverse() : rawUrls), [rawUrls, reverse]);
   const [index, setIndex] = useState(initialFrame);
   const [showHint, setShowHint] = useState(true);
   const drag = useRef<{ x: number; start: number; lastX: number; lastT: number; v: number } | null>(null);
@@ -67,10 +85,20 @@ const FrameScrubber = ({
         const el = trackRef?.current ?? host.current;
         if (!el) return;
         const r = el.getBoundingClientRect();
-        const span = r.height + window.innerHeight;
-        const p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / span));
+        const vh = window.innerHeight;
+        // pin: 0 when the track's top reaches the viewport top, 1 when its bottom
+        // reaches the viewport bottom -- exactly the span a sticky child is stuck.
+        // through: the track's whole pass across the viewport.
+        const span = pin ? Math.max(1, r.height - vh) : r.height + vh;
+        const travelled = pin ? -r.top : vh - r.top;
+        const p = Math.min(1, Math.max(0, travelled / span));
         onProgress?.(p);
-        setIndex(loop ? wrap(Math.round(p * turns * total), total) : Math.min(total - 1, Math.round(p * (total - 1))));
+        if (loop) {
+          setIndex(wrap(Math.round(p * turns * total), total));
+        } else {
+          const q = holdEnd > 0 && holdEnd < 1 ? Math.min(1, p / (1 - holdEnd)) : p;
+          setIndex(Math.min(total - 1, Math.round(q * (total - 1))));
+        }
       });
     };
     onScroll();
@@ -81,7 +109,7 @@ const FrameScrubber = ({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [mode, total, turns, loop, onProgress, trackRef]);
+  }, [mode, total, turns, loop, onProgress, trackRef, pin, holdEnd]);
 
   const onDown = useCallback(
     (e: React.PointerEvent) => {

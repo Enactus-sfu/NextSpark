@@ -11,7 +11,7 @@ const frames = import.meta.glob("../../assets/renders/exploded/*.webp", {
 /** True once the teardown sequence has been added to the bundle. */
 export const hasExploded = Object.keys(frames).length > 0;
 
-const ALT = "Exploded view of the NextSpark generator showing its 6 coils and 12 magnets";
+const ALT = "The NextSpark generator assembling from its separate parts: 6 coils, 12 magnets, rotor and gear train";
 
 type Props = {
   mode?: ScrubMode;
@@ -20,6 +20,12 @@ type Props = {
   onProgress?: (p: number) => void;
   /** Non-sticky ancestor to measure scroll progress against. */
   trackRef?: React.RefObject<HTMLElement | null>;
+  /** Default: scrolling assembles the kit. Pass false to take it apart instead. */
+  assemble?: boolean;
+  /** Measure progress over the sticky pin window rather than the whole pass. */
+  pin?: boolean;
+  /** Finish this fraction early and hold the assembled kit on screen. */
+  holdEnd?: number;
 };
 
 /**
@@ -27,7 +33,7 @@ type Props = {
  * passes through the viewport. Plays once and holds rather than looping.
  * Falls back to the assembled still when the sequence is absent.
  */
-const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, trackRef, ...rest }: Props) => {
+const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, trackRef, assemble = true, pin = false, holdEnd = 0, ...rest }: Props) => {
   // Keep callers that drive captions off progress in a sane state without frames.
   useEffect(() => {
     if (!hasExploded) onProgress?.(0);
@@ -54,6 +60,10 @@ const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, trackRe
       imgClassName={imgClassName}
       onProgress={onProgress}
       trackRef={trackRef}
+      reverse={assemble}
+      pin={pin}
+      holdEnd={holdEnd}
+      initialFrame={0}
       {...rest}
     />
   );

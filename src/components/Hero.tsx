@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import Turntable from "@/components/render/Turntable";
+import heroRender from "@/assets/renders/hero.webp";
+import heroRenderSm from "@/assets/renders/hero-sm.webp";
 
 const facts = [
   { value: "6", label: "Hand-Wound Coils" },
@@ -48,11 +49,20 @@ const Hero = () => {
             </dl>
           </div>
 
-          {/* No frame around it: the render carries its own contact shadow, so it
-              sits on the page rather than in a box. */}
+          {/* Still, not interactive: the kit is taken apart and put back together
+              further down the page, and a second thing to play with up here only
+              competes with it. */}
           <div className="order-1 lg:order-2 relative animate-scale-in">
             <div aria-hidden="true" className="kit-pedestal" />
-            <Turntable mode="drag" className="relative mx-auto w-full max-w-[21rem] lg:max-w-[27rem]" />
+            <img
+              src={heroRender}
+              srcSet={`${heroRenderSm} 700w, ${heroRender} 1200w`}
+              sizes="(max-width: 1024px) 78vw, 40vw"
+              alt="3D render of the NextSpark hand-crank generator"
+              width={1200}
+              height={1499}
+              className="relative mx-auto w-full max-w-[21rem] lg:max-w-[27rem]"
+            />
           </div>
         </div>
       </div>
