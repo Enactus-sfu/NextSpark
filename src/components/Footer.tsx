@@ -1,4 +1,5 @@
 import { Instagram } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { FEEDBACK_FORM_URL, INSTAGRAM_URL } from "@/lib/links";
 
@@ -9,8 +10,16 @@ const sections = [
 ];
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  // Same as the header: a section that is not on this page is a route away.
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const target = document.getElementById(id);
+    if (!target) {
+      navigate(`/#${id}`);
+      return;
+    }
+    target.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -47,6 +56,11 @@ const Footer = () => {
                   </button>
                 </li>
               ))}
+              <li>
+                <Link to="/learning" className="text-background/80 hover:text-background transition-base">
+                  Learning
+                </Link>
+              </li>
               <li>
                 <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="text-background/80 hover:text-background transition-base">
                   Leave Feedback
