@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Learning from "./pages/Learning";
 import NotFound from "./pages/NotFound";
 import VariantIndex from "./pages/variants";
 import Editorial from "./pages/variants/Editorial";
@@ -10,6 +11,7 @@ const App = () => (
   <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/learning" element={<Learning />} />
       {/* Landing page directions, for review */}
       <Route path="/v" element={<VariantIndex />} />
       <Route path="/v/editorial" element={<Editorial />} />
