@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
@@ -12,10 +13,20 @@ const sections = [
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
+  // Pages that carry these sections scroll as before. On one that does not,
+  // such as /learning, the same link has to become a trip back to the landing
+  // page, which scrolls to the hash once it has rendered.
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
+    const target = document.getElementById(id);
+    if (!target) {
+      navigate(`/#${id}`);
+      return;
+    }
+    target.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -34,6 +45,13 @@ const Navigation = () => {
                 {label}
               </button>
             ))}
+            <Link
+              to="/learning"
+              aria-current={pathname === "/learning" ? "page" : undefined}
+              className="text-foreground hover:text-primary transition-base aria-[current=page]:text-primary aria-[current=page]:font-semibold"
+            >
+              Learning
+            </Link>
           </div>
 
           {/* CTA Button (Desktop) */}
@@ -66,6 +84,14 @@ const Navigation = () => {
                   {label}
                 </button>
               ))}
+              <Link
+                to="/learning"
+                onClick={() => setIsOpen(false)}
+                aria-current={pathname === "/learning" ? "page" : undefined}
+                className="py-2 text-foreground hover:text-primary transition-base aria-[current=page]:text-primary aria-[current=page]:font-semibold"
+              >
+                Learning
+              </Link>
               <Button asChild className="w-full" size="lg">
                 <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer">
                   Leave Feedback
