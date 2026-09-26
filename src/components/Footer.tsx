@@ -70,11 +70,9 @@ const Footer = () => {
           </nav>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-background/20 flex flex-col md:flex-row gap-2 justify-between text-center md:text-left text-background/60">
-          <p>© {new Date().getFullYear()} NextSpark, an Enactus SFU project.</p>
-          <p>Website by Michael Gudz</p>
-        </div>
+        <p className="pb-8 border-b border-background/20 text-background/60">
+          © {new Date().getFullYear()} NextSpark, an Enactus SFU project.
+        </p>
       </div>
     </footer>
   );
