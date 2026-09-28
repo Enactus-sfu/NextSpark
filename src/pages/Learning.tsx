@@ -16,6 +16,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import VideoPlaceholder from "@/components/learning/VideoPlaceholder";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/lib/meta";
 
 const PAGE_TITLE = "Learning | Lessons and Assembly Videos | NextSpark";
 const PAGE_DESCRIPTION =
@@ -172,25 +173,8 @@ const applications = [
   },
 ];
 
-/** Sets the page title and meta description while this route is mounted. */
-const useDocumentMeta = (title: string, description: string) => {
-  useEffect(() => {
-    const previousTitle = document.title;
-    const tag = document.querySelector('meta[name="description"]');
-    const previousDescription = tag?.getAttribute("content") ?? null;
-
-    document.title = title;
-    tag?.setAttribute("content", description);
-
-    return () => {
-      document.title = previousTitle;
-      if (previousDescription !== null) tag?.setAttribute("content", previousDescription);
-    };
-  }, [title, description]);
-};
-
 const Learning = () => {
-  useDocumentMeta(PAGE_TITLE, PAGE_DESCRIPTION);
+  usePageMeta({ title: PAGE_TITLE, description: PAGE_DESCRIPTION });
 
   // React Router keeps the previous scroll position across a route change, and
   // most links into this page come from a footer far down the landing page.

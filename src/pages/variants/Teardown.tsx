@@ -8,6 +8,7 @@ import Turntable from "@/components/render/Turntable";
 import heroRender from "@/assets/renders/hero.webp";
 import heroSm from "@/assets/renders/hero-sm.webp";
 import { FEEDBACK_FORM_URL, INSTAGRAM_URL } from "@/lib/links";
+import { usePageMeta } from "@/lib/meta";
 
 /** Kit facts, kept identical to the main hero so the numbers never drift. */
 const facts = [
@@ -94,6 +95,7 @@ const StatAnchor = ({ value, label }: { value: string; label: string }) => (
 );
 
 const Teardown = () => {
+  usePageMeta({ title: "Teardown direction | NextSpark", noindex: true });
   const reduceMotion = usePrefersReducedMotion();
   const [progress, setProgress] = useState(0);
 

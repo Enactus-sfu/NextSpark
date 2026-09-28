@@ -9,6 +9,7 @@ import ExplodedReveal from "@/components/render/ExplodedReveal";
 import { FEEDBACK_FORM_URL, INSTAGRAM_URL } from "@/lib/links";
 import heroRender from "@/assets/renders/hero.webp";
 import heroSm from "@/assets/renders/hero-sm.webp";
+import { usePageMeta } from "@/lib/meta";
 
 const facts = [
   { value: "6", label: "Hand-Wound Coils" },
@@ -76,6 +77,7 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 const Editorial = () => {
+  usePageMeta({ title: "Editorial direction | NextSpark", noindex: true });
   const [teardown, setTeardown] = useState(0);
 
   const scrollToSection = (id: string) => {

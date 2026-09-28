@@ -1,15 +1,9 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/lib/meta";
 
 const NotFound = () => {
-  useEffect(() => {
-    const title = document.title;
-    document.title = "Page not found | NextSpark";
-    return () => {
-      document.title = title;
-    };
-  }, []);
+  usePageMeta({ title: "Page not found | NextSpark", noindex: true });
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4">
