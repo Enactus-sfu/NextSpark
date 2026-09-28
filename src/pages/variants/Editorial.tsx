@@ -211,7 +211,7 @@ const Editorial = () => {
                 srcSet={`${heroSm} 700w, ${heroRender} 1200w`}
                 sizes="(min-width: 768px) 24rem, 70vw"
                 width={1200}
-                height={1499}
+                height={1409}
                 loading="lazy"
                 decoding="async"
                 alt="The assembled NextSpark hand-crank generator: a 3D-printed frame with hand-wound copper coils, a magnet rotor and a crank handle."

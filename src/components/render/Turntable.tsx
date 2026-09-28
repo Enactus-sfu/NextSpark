@@ -30,7 +30,7 @@ const Turntable = ({
         sizes="(max-width: 1024px) 80vw, 40vw"
         alt={ALT}
         width={1200}
-        height={1499}
+        height={1409}
         className={`w-full h-auto ${className} ${imgClassName}`}
       />
     );

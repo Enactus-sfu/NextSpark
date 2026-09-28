@@ -162,7 +162,7 @@ const Teardown = () => {
                   srcSet={`${heroSm} 700w, ${heroRender} 1200w`}
                   sizes="(min-width: 1024px) 40vw, 85vw"
                   width={1200}
-                  height={1499}
+                  height={1409}
                   decoding="async"
                   alt="3D render of the assembled NextSpark hand-crank generator, with its crank, gears and 3D-printed housing"
                   className="relative mx-auto w-full max-w-[24rem] lg:max-w-none h-auto"

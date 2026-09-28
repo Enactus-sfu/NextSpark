@@ -38,7 +38,7 @@ const Footer = () => {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-base"
+              className="w-11 h-11 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-base"
               aria-label="NextSpark on Instagram"
             >
               <Instagram className="w-5 h-5" />
@@ -48,21 +48,21 @@ const Footer = () => {
           {/* Quick Links */}
           <nav aria-labelledby="footer-links">
             <h2 id="footer-links" className="font-bold text-lg mb-4">Quick Links</h2>
-            <ul className="space-y-2">
+            <ul className="space-y-1 md:space-y-2">
               {sections.map(({ id, label }) => (
                 <li key={id}>
-                  <button onClick={() => scrollToSection(id)} className="text-background/80 hover:text-background transition-base">
+                  <button onClick={() => scrollToSection(id)} className="inline-flex min-h-[44px] items-center md:min-h-0 text-background/80 hover:text-background transition-base">
                     {label}
                   </button>
                 </li>
               ))}
               <li>
-                <Link to="/learning" className="text-background/80 hover:text-background transition-base">
+                <Link to="/learning" className="inline-flex min-h-[44px] items-center md:min-h-0 text-background/80 hover:text-background transition-base">
                   Learning
                 </Link>
               </li>
               <li>
-                <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="text-background/80 hover:text-background transition-base">
+                <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center md:min-h-0 text-background/80 hover:text-background transition-base">
                   Leave Feedback
                 </a>
               </li>

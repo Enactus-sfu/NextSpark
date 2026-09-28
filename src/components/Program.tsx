@@ -79,7 +79,11 @@ const Program = () => {
                 <img
                   src={assembledStill}
                   alt="3D render of the assembled NextSpark hand-crank generator"
-                  className="mx-auto w-full max-w-[17rem] sm:max-w-[22rem]"
+                  width={640}
+                  height={694}
+                  loading="lazy"
+                  decoding="async"
+                  className="mx-auto h-auto w-full max-w-[17rem] sm:max-w-[22rem]"
                 />
               )}
               {pinned && (

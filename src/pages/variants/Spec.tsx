@@ -228,7 +228,7 @@ const Spec = () => {
                       alt="3D render of the NextSpark hand-crank generator"
                       className="mx-auto w-full max-w-[20rem] lg:max-w-none"
                       width={1200}
-                      height={1499}
+                      height={1409}
                     />
                   )}
                 </div>
@@ -319,7 +319,7 @@ const Spec = () => {
                       alt="3D render of the NextSpark hand-crank generator"
                       className="mx-auto w-full max-w-[22rem] lg:max-w-none"
                       width={1200}
-                      height={1499}
+                      height={1409}
                     />
                   )}
                 </div>
