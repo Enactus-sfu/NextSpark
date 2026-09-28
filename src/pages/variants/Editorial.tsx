@@ -9,6 +9,7 @@ import ExplodedReveal from "@/components/render/ExplodedReveal";
 import { FEEDBACK_FORM_URL, INSTAGRAM_URL } from "@/lib/links";
 import heroRender from "@/assets/renders/hero.webp";
 import heroSm from "@/assets/renders/hero-sm.webp";
+import { usePageMeta } from "@/lib/meta";
 
 const facts = [
   { value: "6", label: "Hand-Wound Coils" },
@@ -76,6 +77,7 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 const Editorial = () => {
+  usePageMeta({ title: "Editorial direction | NextSpark", noindex: true });
   const [teardown, setTeardown] = useState(0);
 
   const scrollToSection = (id: string) => {
@@ -211,7 +213,7 @@ const Editorial = () => {
                 srcSet={`${heroSm} 700w, ${heroRender} 1200w`}
                 sizes="(min-width: 768px) 24rem, 70vw"
                 width={1200}
-                height={1499}
+                height={1409}
                 loading="lazy"
                 decoding="async"
                 alt="The assembled NextSpark hand-crank generator: a 3D-printed frame with hand-wound copper coils, a magnet rotor and a crank handle."

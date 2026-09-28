@@ -9,6 +9,7 @@ import Turntable, { hasTurntable } from "@/components/render/Turntable";
 import ExplodedReveal from "@/components/render/ExplodedReveal";
 import heroRender from "@/assets/renders/hero.webp";
 import heroSm from "@/assets/renders/hero-sm.webp";
+import { usePageMeta } from "@/lib/meta";
 
 /**
  * "Spec sheet" variant — the kit documented like a piece of engineering, for
@@ -139,6 +140,7 @@ const SectionHead = ({ index, title, lead }: { index: string; title: string; lea
 );
 
 const Spec = () => {
+  usePageMeta({ title: "Spec sheet direction | NextSpark", noindex: true });
   const [progress, setProgress] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -228,7 +230,7 @@ const Spec = () => {
                       alt="3D render of the NextSpark hand-crank generator"
                       className="mx-auto w-full max-w-[20rem] lg:max-w-none"
                       width={1200}
-                      height={1499}
+                      height={1409}
                     />
                   )}
                 </div>
@@ -319,7 +321,7 @@ const Spec = () => {
                       alt="3D render of the NextSpark hand-crank generator"
                       className="mx-auto w-full max-w-[22rem] lg:max-w-none"
                       width={1200}
-                      height={1499}
+                      height={1409}
                     />
                   )}
                 </div>

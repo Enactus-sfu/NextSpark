@@ -38,7 +38,7 @@ const ExplodedReveal = ({ className = "", imgClassName = "", onProgress, trackRe
         src={stillSrc}
         alt="3D render of the assembled NextSpark hand-crank generator"
         width={1200}
-        height={1499}
+        height={1409}
         className={`w-full h-auto ${className} ${imgClassName}`}
       />
     );

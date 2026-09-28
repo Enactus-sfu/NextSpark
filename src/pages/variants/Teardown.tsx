@@ -8,6 +8,7 @@ import Turntable from "@/components/render/Turntable";
 import heroRender from "@/assets/renders/hero.webp";
 import heroSm from "@/assets/renders/hero-sm.webp";
 import { FEEDBACK_FORM_URL, INSTAGRAM_URL } from "@/lib/links";
+import { usePageMeta } from "@/lib/meta";
 
 /** Kit facts, kept identical to the main hero so the numbers never drift. */
 const facts = [
@@ -94,6 +95,7 @@ const StatAnchor = ({ value, label }: { value: string; label: string }) => (
 );
 
 const Teardown = () => {
+  usePageMeta({ title: "Teardown direction | NextSpark", noindex: true });
   const reduceMotion = usePrefersReducedMotion();
   const [progress, setProgress] = useState(0);
 
@@ -162,7 +164,7 @@ const Teardown = () => {
                   srcSet={`${heroSm} 700w, ${heroRender} 1200w`}
                   sizes="(min-width: 1024px) 40vw, 85vw"
                   width={1200}
-                  height={1499}
+                  height={1409}
                   decoding="async"
                   alt="3D render of the assembled NextSpark hand-crank generator, with its crank, gears and 3D-printed housing"
                   className="relative mx-auto w-full max-w-[24rem] lg:max-w-none h-auto"

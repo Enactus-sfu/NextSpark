@@ -60,8 +60,8 @@ const Hero = () => {
               sizes="(max-width: 1024px) 78vw, 40vw"
               alt="3D render of the NextSpark hand-crank generator"
               width={1200}
-              height={1499}
-              className="relative mx-auto w-full max-w-[21rem] lg:max-w-[27rem]"
+              height={1409}
+              className="relative mx-auto w-full max-w-[15rem] sm:max-w-[21rem] lg:max-w-[27rem]"
             />
           </div>
         </div>

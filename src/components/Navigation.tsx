@@ -34,7 +34,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <button type="button" aria-label="NextSpark home" className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection("hero")}>
+          <button type="button" aria-label="NextSpark home" className="flex items-center gap-3 cursor-pointer -mx-2 px-2 min-h-[44px]" onClick={() => scrollToSection("hero")}>
             <img src={logo} alt="" className="h-8 md:h-10" />
           </button>
 
@@ -66,7 +66,7 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2"
+            className="md:hidden flex items-center justify-center min-h-[44px] min-w-[44px] p-2"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -80,7 +80,7 @@ const Navigation = () => {
           <div id="mobile-menu" className="md:hidden py-4 animate-fade-in">
             <div className="flex flex-col gap-4">
               {sections.map(({ id, label }) => (
-                <button key={id} onClick={() => scrollToSection(id)} className="text-left py-2 text-foreground hover:text-primary transition-base">
+                <button key={id} onClick={() => scrollToSection(id)} className="flex min-h-[44px] items-center text-left text-foreground hover:text-primary transition-base">
                   {label}
                 </button>
               ))}
@@ -88,7 +88,7 @@ const Navigation = () => {
                 to="/learning"
                 onClick={() => setIsOpen(false)}
                 aria-current={pathname === "/learning" ? "page" : undefined}
-                className="py-2 text-foreground hover:text-primary transition-base aria-[current=page]:text-primary aria-[current=page]:font-semibold"
+                className="flex min-h-[44px] items-center text-foreground hover:text-primary transition-base aria-[current=page]:text-primary aria-[current=page]:font-semibold"
               >
                 Learning
               </Link>
